@@ -2,6 +2,18 @@
 import "../styles/global.css";
 import ScrollProgress from "../components/ScrollProgress.astro";
 
+// Preload the fonts actually used above the fold, using ?url imports so
+// the hashed build path is always correct. Fixes Lighthouse's "network
+// dependency tree" finding: without this, the browser only discovers these
+// files after parsing global.css, which itself only loads after several JS
+// chunks — turning a parallel-fetchable resource into the tail of a long
+// waterfall (each font was showing ~1.9s deep in the critical chain).
+import instrumentSans400 from "@fontsource/instrument-sans/files/instrument-sans-latin-400-normal.woff2?url";
+import instrumentSans500 from "@fontsource/instrument-sans/files/instrument-sans-latin-500-normal.woff2?url";
+import instrumentSans700 from "@fontsource/instrument-sans/files/instrument-sans-latin-700-normal.woff2?url";
+import jetbrainsMono400 from "@fontsource/jetbrains-mono/files/jetbrains-mono-latin-400-normal.woff2?url";
+import jetbrainsMono500 from "@fontsource/jetbrains-mono/files/jetbrains-mono-latin-500-normal.woff2?url";
+
 interface Props {
   title: string;
   description: string;
@@ -31,6 +43,14 @@ const absoluteCanonicalUrl = new URL(canonicalUrl, Astro.site ?? Astro.url).href
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Above-the-fold fonts, fetched in parallel from the first moment
+         possible instead of waiting to be discovered via global.css. -->
+    <link rel="preload" as="font" type="font/woff2" href={instrumentSans400} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={instrumentSans500} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={instrumentSans700} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={jetbrainsMono400} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={jetbrainsMono500} crossorigin />
 
     <!-- Bug 4 fix: complete head from the base layout, not left to each page -->
     <title>{title}</title>
