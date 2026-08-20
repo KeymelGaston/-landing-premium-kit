@@ -13,7 +13,7 @@ export default defineConfig({
   // REQUIRED before deploying: replace with the kit's real deployed domain.
   // Astro needs this to resolve absolute URLs for og:image, canonical links,
   // and the sitemap — without it, social previews silently break.
-  site: 'https://example.com',
+  site: 'https://landing-premium-kit.vercel.app',
 
   vite: {
     plugins: [tailwindcss()]
