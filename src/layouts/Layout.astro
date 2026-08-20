@@ -1,0 +1,77 @@
+---
+import "../styles/global.css";
+import ScrollProgress from "../components/ScrollProgress.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  /** Absolute URL to a 1200x630 social preview image. */
+  ogImage?: string;
+  /** Absolute canonical URL for this page. */
+  canonicalUrl?: string;
+}
+
+const {
+  title,
+  description,
+  ogImage = "/og-default.png",
+  canonicalUrl = Astro.url.href,
+} = Astro.props;
+
+// og:image and canonical URLs must be absolute per the Open Graph spec —
+// resolve against the `site` configured in astro.config.mjs rather than
+// assuming the caller always passes a full URL.
+const absoluteOgImage = new URL(ogImage, Astro.site ?? Astro.url).href;
+const absoluteCanonicalUrl = new URL(canonicalUrl, Astro.site ?? Astro.url).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Bug 4 fix: complete head from the base layout, not left to each page -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={absoluteCanonicalUrl} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={absoluteOgImage} />
+    <meta property="og:url" content={absoluteCanonicalUrl} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={absoluteOgImage} />
+
+    <meta name="generator" content={Astro.generator} />
+
+    <!--
+      Sets data-theme before first paint, so the correct token set (paper/void)
+      applies immediately instead of flashing the wrong theme on load.
+      Kept as an inline script (not a module) so it blocks render — this is
+      the one deliberate exception to "no inline scripts" in the codebase.
+    -->
+    <script is:inline>
+      (function () {
+        const stored = localStorage.getItem("theme");
+        const theme =
+          stored ?? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+  </head>
+  <body class="bg-bg text-text">
+    <ScrollProgress />
+    <slot />
+
+    <script>
+      import { initSmoothScroll } from "../animations/lenis/lenis";
+      initSmoothScroll();
+    </script>
+  </body>
+</html>

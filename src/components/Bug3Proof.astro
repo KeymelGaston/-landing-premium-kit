@@ -1,0 +1,35 @@
+---
+import HydrationProofCounter from "./interactive/HydrationProofCounter";
+---
+
+<div class="relative overflow-hidden rounded-md border border-border p-8">
+  <div
+    id="decorative-blob"
+    aria-hidden="true"
+    class="pointer-events-none absolute -right-6 top-1/2 z-decorative h-36 w-36 -translate-y-1/2 rounded-full bg-accent/25 blur-2xl"
+  >
+  </div>
+
+  <p class="relative z-content font-mono text-xs uppercase tracking-(--tracking-wide) text-muted">
+    try it — this isn't a screenshot
+  </p>
+
+  <p class="relative z-content mt-3 max-w-md text-sm leading-(--leading-normal) text-muted">
+    That glow is animating right now, positioned to overlap the button below.
+    It can't eat the click — <code class="font-mono text-text">pointer-events: none</code>
+    plus the z-index scale in <code class="font-mono text-text">tokens.css</code>
+    make that architecturally impossible, not just untested. The button is
+    also a React island hydrating with <code class="font-mono text-text">client:visible</code>
+    — the directive most likely to drop a click that lands before hydration
+    finishes.
+  </p>
+
+  <div class="relative z-content mt-6">
+    <HydrationProofCounter client:visible />
+  </div>
+</div>
+
+<script>
+  import { pulseDecorative } from "../animations/timelines/decorative-pulse";
+  pulseDecorative("#decorative-blob");
+</script>

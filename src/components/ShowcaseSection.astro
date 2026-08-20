@@ -1,0 +1,22 @@
+---
+import Signature from "./Signature.astro";
+import Carousel from "./Carousel.astro";
+---
+
+<section id="demo" class="px-6 py-(--space-section) md:px-16">
+  <div class="mx-auto max-w-(--content-max-width)">
+    <Signature label="real screenshots, not stock mockups" />
+    <h2 class="mt-5 max-w-2xl text-2xl font-bold leading-(--leading-snug) tracking-(--tracking-tight) md:text-3xl">
+      See it in motion.
+    </h2>
+    <p class="mt-5 max-w-xl text-muted">
+      Every image below is a real capture of this exact kit — light, dark,
+      and a mobile viewport with zero horizontal overflow. Click through, or
+      use the arrow keys.
+    </p>
+
+    <div class="mt-12">
+      <Carousel />
+    </div>
+  </div>
+</section>

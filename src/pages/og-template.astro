@@ -1,0 +1,39 @@
+---
+/**
+ * Not a real page — not linked anywhere in the site nav. This exists only
+ * so we can screenshot it at exactly 1200x630 to produce public/og-default.png,
+ * reusing the actual design tokens and fonts instead of hand-rolling a
+ * separate static image that could drift from the real brand.
+ *
+ * To regenerate: run the dev server, screenshot this route at 1200x630,
+ * save the result to public/og-default.png.
+ */
+import "../styles/global.css";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="noindex, nofollow" />
+  </head>
+  <body class="bg-bg text-text">
+    <div class="flex h-[630px] w-[1200px] flex-col justify-between p-16">
+      <div class="flex items-center justify-between">
+        <span class="font-mono text-lg font-medium">landing-premium-kit</span>
+        <span class="inline-flex items-center gap-1.5 font-mono text-base text-signature">
+          <span aria-hidden="true">+</span>
+          <span>synced scroll, no dead animations</span>
+        </span>
+      </div>
+
+      <h1 class="max-w-4xl text-6xl font-bold leading-(--leading-tight) tracking-(--tracking-tight)">
+        A landing kit that survives contact with production.
+      </h1>
+
+      <div class="flex items-center gap-8 font-mono text-lg text-muted">
+        <span>Astro + GSAP + Lenis</span>
+        <span class="text-accent">4 bugs fixed, not left for you to find</span>
+      </div>
+    </div>
+  </body>
+</html>

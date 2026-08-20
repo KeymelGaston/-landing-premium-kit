@@ -1,0 +1,88 @@
+---
+import { Image } from "astro:assets";
+import lightDesktop from "../assets/showcase/light-desktop.png";
+import darkDesktop from "../assets/showcase/dark-desktop.png";
+import mobile from "../assets/showcase/mobile.png";
+
+const slides = [
+  { image: lightDesktop, alt: "The kit's landing page in light mode, desktop viewport", label: "light · desktop" },
+  { image: darkDesktop, alt: "The kit's landing page in dark mode, desktop viewport", label: "dark · desktop" },
+  { image: mobile, alt: "The kit's landing page on a mobile viewport, no horizontal overflow", label: "light · mobile" },
+];
+---
+
+<div
+  id="showcase-carousel"
+  class="opacity-0"
+  role="region"
+  aria-roledescription="carousel"
+  aria-label="Kit screenshots"
+  tabindex="0"
+>
+  <div class="overflow-hidden rounded-md border border-border">
+    <div data-carousel-track class="flex" style="will-change: transform;">
+      {
+        slides.map((slide, i) => (
+          <div
+            data-carousel-slide
+            aria-hidden={i !== 0}
+            class="flex h-[360px] w-full flex-shrink-0 items-center justify-center p-4 sm:h-[460px] md:h-[560px]"
+          >
+            <Image
+              src={slide.image}
+              alt={slide.alt}
+              widths={[640, 1200, 1600]}
+              sizes="(max-width: 768px) 100vw, 1152px"
+              loading={i === 0 ? "eager" : "lazy"}
+              class="block max-h-full max-w-full rounded-sm object-contain"
+            />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="mt-5 flex items-center justify-between">
+    <div class="flex gap-2">
+      {
+        slides.map((slide, i) => (
+          <button
+            type="button"
+            data-carousel-dot
+            aria-current={i === 0}
+            aria-label={`Show ${slide.label}`}
+            class="h-1.5 w-6 rounded-full bg-border transition-colors aria-[current=true]:bg-accent"
+          />
+        ))
+      }
+    </div>
+
+    <div class="flex gap-2">
+      <button
+        type="button"
+        data-carousel-prev
+        aria-label="Previous screenshot"
+        class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border transition-colors hover:border-accent"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="h-4 w-4">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 18l-6-6 6-6" />
+        </svg>
+      </button>
+      <button
+        type="button"
+        data-carousel-next
+        aria-label="Next screenshot"
+        class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border transition-colors hover:border-accent"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="h-4 w-4">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { initCarousel } from "../animations/timelines/carousel";
+  initCarousel("#showcase-carousel");
+</script>

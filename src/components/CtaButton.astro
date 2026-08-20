@@ -1,0 +1,46 @@
+---
+/**
+ * Plain HTML + CSS button — no framework.
+ *
+ * This is the reference example for the "framework minimalism" principle:
+ * simple interactive elements (buttons, accordions, toggles) should stay
+ * as native HTML/Astro, not get wrapped in a React island. That keeps the
+ * JS bundle small and Time to Interactive low (feeds directly into the
+ * Bug 4 / Lighthouse fix) and avoids hydration-related click issues
+ * (feeds directly into the Bug 3 fix).
+ */
+interface Props {
+  href: string;
+  variant?: "primary" | "ghost";
+  class?: string;
+  /** Adds the restrained magnetic-hover flourish. Use on one CTA per view. */
+  magnetic?: boolean;
+}
+
+const { href, variant = "primary", class: className = "", magnetic = false } = Astro.props;
+
+const base =
+  "inline-flex items-center justify-center rounded-md px-6 py-3 font-medium transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
+
+const variants = {
+  primary: "bg-accent text-accent-text hover:opacity-90",
+  ghost: "border border-border text-text hover:border-accent",
+};
+---
+
+<a href={href} class:list={[base, variants[variant], className]} data-magnetic={magnetic}>
+  <slot />
+</a>
+
+{
+  magnetic && (
+    <script>
+      import { magnetize } from "../animations/utils/magnetic";
+
+      document
+        .querySelectorAll<HTMLElement>("[data-magnetic='true']")
+        .forEach((el) => magnetize(el));
+    </script>
+  )
+}
+

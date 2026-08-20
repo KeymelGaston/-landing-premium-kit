@@ -1,0 +1,38 @@
+---
+import CtaButton from "./CtaButton.astro";
+import Signature from "./Signature.astro";
+---
+
+<section id="pricing" class="px-6 py-(--space-section) md:px-16">
+  <div class="mx-auto max-w-(--content-max-width)">
+    <Signature label="ship the landing page, not the debugging session" />
+    <h2 class="mt-5 max-w-2xl text-2xl font-bold leading-(--leading-snug) tracking-(--tracking-tight) md:text-3xl">
+      Get the kit.
+    </h2>
+
+    <div class="mt-16 grid gap-px overflow-hidden rounded-md border border-border md:grid-cols-2">
+      <div class="bg-bg p-8 md:p-10">
+        <p class="font-mono text-xs uppercase tracking-(--tracking-wide) text-muted">base</p>
+        <p class="mt-3 text-3xl font-bold tracking-(--tracking-tight) md:text-4xl">$69</p>
+        <p class="mt-4 max-w-xs text-sm text-muted">
+          Full template, docs, and the live demo. No support window.
+        </p>
+        <CtaButton href="#" variant="ghost" class="mt-8 w-full">
+          Get the base kit
+        </CtaButton>
+      </div>
+
+      <div class="bg-bg p-8 md:p-10">
+        <p class="font-mono text-xs uppercase tracking-(--tracking-wide) text-accent">with support</p>
+        <p class="mt-3 text-3xl font-bold tracking-(--tracking-tight) md:text-4xl">$99</p>
+        <p class="mt-4 max-w-xs text-sm text-muted">
+          Everything in base, plus 14 days of email support for up to 3
+          configuration requests.
+        </p>
+        <CtaButton href="#" variant="primary" class="mt-8 w-full" magnetic>
+          Get the kit with support
+        </CtaButton>
+      </div>
+    </div>
+  </div>
+</section>

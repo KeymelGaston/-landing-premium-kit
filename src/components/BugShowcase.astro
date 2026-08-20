@@ -1,0 +1,71 @@
+---
+import Signature from "./Signature.astro";
+import Bug3Proof from "./Bug3Proof.astro";
+
+const bugs = [
+  {
+    label: "scroll-triggered animations",
+    before: "ScrollTrigger never fires — Lenis intercepts scroll before GSAP sees it",
+    after: "Lenis piped into GSAP's ticker, ScrollTrigger.update on every scroll tick",
+  },
+  {
+    label: "image fade-ins",
+    before: "opacity animates before the image has decoded — reveals a blank box",
+    after: "animation gated on the image's real load/decode event",
+  },
+  {
+    label: "dead click targets",
+    before: "z-index from an animated layer silently eats the click",
+    after: "z-index architecture documented per section, islands keep their listeners",
+  },
+  {
+    label: "SEO / Lighthouse score",
+    before: "missing OG tags, broken heading order, images without alt",
+    after: "complete head from the base layout, semantic hierarchy, required alt",
+  },
+];
+---
+
+<section id="bugs" class="px-6 py-(--space-section) md:px-16">
+  <div class="mx-auto max-w-(--content-max-width)">
+    <Signature label="4 bugs fixed at the config level, not left for you to find" />
+    <h2 class="mt-5 max-w-2xl text-2xl font-bold leading-(--leading-snug) tracking-(--tracking-tight) md:text-3xl">
+      Every one of these is the actual reason a motion-design landing breaks
+      in production.
+    </h2>
+
+    <div id="bug-diff-list" class="mt-16 flex flex-col">
+      {
+        bugs.map((bug) => (
+          <div class="diff-item border-t border-border py-8 first:border-t-0 md:grid md:grid-cols-[minmax(0,220px)_1fr] md:gap-10 md:py-10">
+            <p class="font-mono text-sm text-muted">{bug.label}</p>
+            <div class="mt-3 space-y-1.5 md:mt-0">
+              <p class="font-mono text-sm leading-(--leading-normal) text-muted">
+                <span aria-hidden="true" class="mr-1">-</span>
+                {bug.before}
+              </p>
+              <p class="font-mono text-sm leading-(--leading-normal) text-accent">
+                <span aria-hidden="true" class="mr-1">+</span>
+                {bug.after}
+              </p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="mt-10">
+      <Bug3Proof />
+    </div>
+  </div>
+</section>
+
+<script>
+  import { diffReveal } from "../animations/timelines/diff-reveal";
+  import { onSmoothScrollReady } from "../animations/lenis/lenis";
+
+  // Wait for Lenis (or the reduced-motion decision) to resolve before
+  // creating any ScrollTrigger instance — Layout.astro's initSmoothScroll()
+  // call sits at the end of <body>, after this script in document order.
+  onSmoothScrollReady(() => diffReveal("#bug-diff-list", ".diff-item"));
+</script>

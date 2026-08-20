@@ -1,0 +1,29 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import BugShowcase from "../components/BugShowcase.astro";
+import ShowcaseSection from "../components/ShowcaseSection.astro";
+import DifferentiatorTable from "../components/DifferentiatorTable.astro";
+import FinalCta from "../components/FinalCta.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout
+  title="Landing Premium Kit — Astro + GSAP + Lenis, done right"
+  description="A motion-design landing page template that fixes the 4 most common Astro + GSAP + Lenis bugs before you ever hit them."
+>
+  <Header />
+  <main>
+    <Hero />
+
+    <BugShowcase />
+
+    <ShowcaseSection />
+
+    <DifferentiatorTable />
+
+    <FinalCta />
+  </main>
+  <Footer />
+</Layout>

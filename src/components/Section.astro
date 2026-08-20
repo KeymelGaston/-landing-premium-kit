@@ -1,0 +1,37 @@
+---
+import Signature from "./Signature.astro";
+
+interface Props {
+  id?: string;
+  eyebrowLabel: string;
+  eyebrowVariant?: "add" | "remove" | "change";
+  title: string;
+}
+
+const { id, eyebrowLabel, eyebrowVariant = "add", title } = Astro.props;
+---
+
+<section id={id} class="reveal-section px-6 py-(--space-section) md:px-16">
+  <div class="mx-auto max-w-(--content-max-width)">
+    <Signature label={eyebrowLabel} variant={eyebrowVariant} />
+    <h2 class="mt-5 max-w-2xl text-2xl font-bold leading-(--leading-snug) tracking-(--tracking-tight) md:text-3xl">
+      {title}
+    </h2>
+    <div class="mt-5 max-w-xl text-muted">
+      <slot />
+    </div>
+  </div>
+</section>
+
+<script>
+  import { revealOnScroll } from "../animations/timelines/scroll-reveal";
+  import { onSmoothScrollReady } from "../animations/lenis/lenis";
+
+  onSmoothScrollReady(() => {
+    document.querySelectorAll(".reveal-section").forEach((el, i) => {
+      // Each section needs its own selector — id if present, else nth-of-type.
+      const target = el.id ? `#${el.id}` : `.reveal-section:nth-of-type(${i + 1})`;
+      revealOnScroll(target);
+    });
+  });
+</script>

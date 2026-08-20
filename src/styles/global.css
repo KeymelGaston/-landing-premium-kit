@@ -1,0 +1,64 @@
+@import "tailwindcss";
+@import "./tokens.css";
+
+/* Self-hosted fonts — no external request to Google Fonts at runtime,
+   which keeps the Lighthouse network waterfall clean (feeds Bug 4). */
+@import "@fontsource/instrument-sans/400.css";
+@import "@fontsource/instrument-sans/500.css";
+@import "@fontsource/instrument-sans/700.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+
+/**
+ * Maps design tokens into Tailwind v4's theme layer, so utilities like
+ * bg-bg, text-text, text-accent, font-mono etc. resolve to the tokens
+ * defined in tokens.css (and flip automatically with data-theme="dark").
+ */
+@theme inline {
+  --color-bg: var(--color-bg);
+  --color-text: var(--color-text);
+  --color-accent: var(--color-accent);
+  --color-accent-text: var(--color-accent-text);
+  --color-signature: var(--color-signature);
+  --color-border: var(--color-border);
+  --color-muted: var(--color-muted);
+
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  --text-xs: var(--text-xs);
+  --text-sm: var(--text-sm);
+  --text-base: var(--text-base);
+  --text-lg: var(--text-lg);
+  --text-xl: var(--text-xl);
+  --text-2xl: var(--text-2xl);
+  --text-3xl: var(--text-3xl);
+  --text-4xl: var(--text-4xl);
+
+  --z-index-decorative: var(--z-index-decorative);
+  --z-index-content: var(--z-index-content);
+  --z-index-sticky: var(--z-index-sticky);
+  --z-index-overlay: var(--z-index-overlay);
+}
+
+html {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+/* Respect prefers-reduced-motion out of the box for anything CSS-driven.
+   The GSAP/Lenis side of this is handled in src/animations/lenis/lenis.ts */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,22 @@
+---
+import ThemeToggle from "./ThemeToggle.astro";
+---
+
+<header class="sticky top-0 z-sticky border-b border-border bg-bg/80 backdrop-blur">
+  <div
+    class="mx-auto flex max-w-(--content-max-width) items-center justify-between px-6 py-4 md:px-16"
+  >
+    <a href="/" class="font-mono text-sm font-medium tracking-wide">
+      landing-premium-kit
+    </a>
+    <nav class="flex items-center gap-6">
+      <a href="#bugs" class="hidden text-sm text-muted transition-colors hover:text-text sm:inline">
+        The 4 bugs
+      </a>
+      <a href="#pricing" class="hidden text-sm text-muted transition-colors hover:text-text sm:inline">
+        Pricing
+      </a>
+      <ThemeToggle />
+    </nav>
+  </div>
+</header>

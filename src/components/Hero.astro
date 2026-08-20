@@ -1,0 +1,36 @@
+---
+import CtaButton from "./CtaButton.astro";
+import Signature from "./Signature.astro";
+---
+
+<section class="relative flex min-h-[92vh] flex-col justify-center px-6 py-(--space-section) md:px-16">
+  <div class="mx-auto flex max-w-(--content-max-width) flex-col gap-8">
+    <Signature label="synced scroll, no dead animations" />
+
+    <h1
+      id="hero-heading"
+      class="max-w-3xl text-2xl font-bold leading-(--leading-tight) tracking-(--tracking-tight) sm:text-3xl md:text-4xl"
+    >
+      A landing kit that survives contact with production.
+    </h1>
+
+    <p id="hero-subheading" class="max-w-xl text-lg leading-(--leading-normal) text-muted">
+      Astro, GSAP and Lenis, wired together the way you'd expect them to work
+      — not the way they do by default.
+    </p>
+
+    <div id="hero-cta">
+      <CtaButton href="#demo" variant="primary" magnetic>See it in motion</CtaButton>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { playHeroTimeline } from "../animations/timelines/hero";
+
+  playHeroTimeline({
+    heading: "#hero-heading",
+    subheading: "#hero-subheading",
+    cta: "#hero-cta",
+  });
+</script>

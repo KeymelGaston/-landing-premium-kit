@@ -1,0 +1,56 @@
+---
+/**
+ * Light/dark toggle. Deliberately plain HTML + a tiny inline-module script —
+ * this is exactly the kind of interactivity that does not justify a React
+ * island (see CtaButton.astro for the same principle).
+ */
+---
+
+<button
+  id="theme-toggle"
+  type="button"
+  aria-label="Toggle color theme"
+  class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border text-text transition-colors hover:border-accent"
+>
+  <svg
+    id="theme-toggle-icon"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.75"
+    class="h-4 w-4"
+  >
+    <path
+      id="theme-icon-path"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.36 6.36-.7-.7M6.34 6.34l-.7-.7m12.72 0-.7.7M6.34 17.66l-.7.7M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"
+    ></path>
+  </svg>
+</button>
+
+<script>
+  const SUN_PATH =
+    "M12 3v1m0 16v1m9-9h-1M4 12H3m15.36 6.36-.7-.7M6.34 6.34l-.7-.7m12.72 0-.7.7M6.34 17.66l-.7.7M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z";
+  const MOON_PATH = "M20.354 15.354A9 9 0 0 1 8.646 3.646 9.003 9.003 0 0 0 12 21a9.003 9.003 0 0 0 8.354-5.646Z";
+
+  function currentTheme(): "light" | "dark" {
+    return document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+  }
+
+  function syncIcon() {
+    const path = document.getElementById("theme-icon-path");
+    if (!path) return;
+    path.setAttribute("d", currentTheme() === "dark" ? MOON_PATH : SUN_PATH);
+  }
+
+  document.getElementById("theme-toggle")?.addEventListener("click", () => {
+    const next = currentTheme() === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next;
+    localStorage.setItem("theme", next);
+    syncIcon();
+  });
+
+  syncIcon();
+</script>

@@ -1,0 +1,35 @@
+---
+---
+
+<div
+  id="scroll-progress"
+  class="fixed inset-x-0 top-0 z-overlay h-[2px] origin-left scale-x-0 bg-accent"
+  aria-hidden="true"
+></div>
+
+<script>
+  import { onSmoothScrollReady } from "../animations/lenis/lenis";
+
+  const bar = document.getElementById("scroll-progress");
+  if (bar) {
+    onSmoothScrollReady((lenis) => {
+      if (lenis) {
+        // Lenis's own scroll event already carries a normalized 0–1
+        // progress — reuse it instead of recomputing scroll math by hand.
+        lenis.on("scroll", ({ progress }: { progress: number }) => {
+          bar.style.transform = `scaleX(${progress})`;
+        });
+      } else {
+        // Reduced-motion path: Lenis was skipped, so drive the bar off
+        // native scroll instead of leaving it dead at 0.
+        const update = () => {
+          const max = document.documentElement.scrollHeight - window.innerHeight;
+          const progress = max > 0 ? window.scrollY / max : 0;
+          bar.style.transform = `scaleX(${progress})`;
+        };
+        document.addEventListener("scroll", update, { passive: true });
+        update();
+      }
+    });
+  }
+</script>

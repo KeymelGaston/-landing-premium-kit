@@ -1,0 +1,53 @@
+---
+import Signature from "./Signature.astro";
+
+const rows = [
+  {
+    claim: '"Professional design"',
+    evidence: "An original color system (paper/void surfaces + one accent), not a UI kit's default palette",
+  },
+  {
+    claim: '"Attention to detail"',
+    evidence: "4 documented, reproducible bugs fixed — with regression tests, not a claim",
+  },
+  {
+    claim: '"A distinct identity"',
+    evidence: "The signature element: git-diff style tags in a color used nowhere else",
+  },
+  {
+    claim: '"Well built"',
+    evidence: "One typeface family, used deliberately — not an automatic font pairing",
+  },
+];
+---
+
+<section class="px-6 py-(--space-section) md:px-16">
+  <div class="mx-auto max-w-(--content-max-width)">
+    <Signature label="what's underneath the claim" variant="change" />
+    <h2 class="mt-5 max-w-2xl text-2xl font-bold leading-(--leading-snug) tracking-(--tracking-tight) md:text-3xl">
+      Instead of saying it, this is what shows it.
+    </h2>
+
+    <div id="differentiator-list" class="mt-16 flex flex-col">
+      <div class="hidden border-b border-border pb-3 font-mono text-xs uppercase tracking-(--tracking-wide) text-muted md:grid md:grid-cols-[minmax(0,280px)_1fr]">
+        <span>Instead of saying...</span>
+        <span>It's demonstrated by...</span>
+      </div>
+      {
+        rows.map((row) => (
+          <div class="diff-item border-t border-border py-6 first:border-t-0 md:grid md:grid-cols-[minmax(0,280px)_1fr] md:gap-10 md:py-7">
+            <p class="text-muted">{row.claim}</p>
+            <p class="mt-2 md:mt-0">{row.evidence}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  import { diffReveal } from "../animations/timelines/diff-reveal";
+  import { onSmoothScrollReady } from "../animations/lenis/lenis";
+
+  onSmoothScrollReady(() => diffReveal("#differentiator-list", ".diff-item"));
+</script>

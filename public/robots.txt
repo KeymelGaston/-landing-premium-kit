@@ -1,0 +1,6 @@
+# REQUIRED before deploying: this URL must match the `site` value in
+# astro.config.mjs — update both to the kit's real deployed domain.
+User-agent: *
+Allow: /
+
+Sitemap: https://example.com/sitemap-index.xml

@@ -1,0 +1,56 @@
+---
+/**
+ * The kit's signature element: a git-diff style tag ("+ synced scroll"),
+ * set in monospace, in the silver token that is exclusive to this
+ * component. Never reuse --color-signature on buttons or general accents —
+ * that exclusivity is what makes it read as a signature instead of a
+ * palette choice.
+ */
+interface Props {
+  label: string;
+  /** "+" for additions/features, "-" for removed friction, "~" for changed. */
+  variant?: "add" | "remove" | "change";
+  class?: string;
+}
+
+const { label, variant = "add", class: className = "" } = Astro.props;
+
+const symbol = { add: "+", remove: "-", change: "~" }[variant];
+---
+
+<span
+  class:list={[
+    "signature-tag inline-flex items-center gap-1.5 font-mono text-sm text-signature",
+    className,
+  ]}
+>
+  <span aria-hidden="true">{symbol}</span>
+  <span>{label}</span>
+</span>
+
+<style>
+  /* The blinking cursor is the signature element's one flourish — CSS-only
+     so it costs nothing on the JS side, and it already respects
+     prefers-reduced-motion via the global rule in global.css. */
+  .signature-tag::after {
+    content: "";
+    display: inline-block;
+    width: 0.5em;
+    height: 1em;
+    margin-left: 0.15em;
+    background-color: currentColor;
+    vertical-align: text-bottom;
+    animation: signature-blink 1.1s step-end infinite;
+  }
+
+  @keyframes signature-blink {
+    0%,
+    45% {
+      opacity: 1;
+    }
+    50%,
+    100% {
+      opacity: 0;
+    }
+  }
+</style>
