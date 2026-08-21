@@ -1,27 +1,31 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("scroll-triggered animations (Bug 1 regression guard)", () => {
-  test("below-the-fold section reveals on scroll", async ({ page }) => {
+  test("bug list reveals via clip-path on scroll, item by item", async ({ page }) => {
     await page.goto("/");
 
-    const section = page.locator("#bugs");
+    // Scoped selector: DifferentiatorTable reuses the same ".diff-item"
+    // class for its own rows, so an unscoped locator would be ambiguous.
+    const firstItem = page.locator("#bug-diff-list .diff-item").first();
 
-    // Before scrolling, GSAP's `from()` should have set opacity to 0.
-    await expect(section).toHaveCSS("opacity", "0");
+    // Before scrolling, diffReveal's gsap.set() clips each item to zero width.
+    await expect(firstItem).toHaveCSS("clip-path", "inset(0px 100% 0px 0px)");
 
-    await section.scrollIntoViewIfNeeded();
+    await firstItem.scrollIntoViewIfNeeded();
 
-    // If Lenis and ScrollTrigger are out of sync, this stays at 0 forever —
+    // If Lenis and ScrollTrigger are out of sync, this stays clipped forever —
     // this assertion is the thing that would fail if the Bug 1 fix broke.
-    await expect(section).toHaveCSS("opacity", "1", { timeout: 5000 });
+    await expect(firstItem).toHaveCSS("clip-path", "inset(0px 0% 0px 0px)", {
+      timeout: 5000,
+    });
   });
 
-  test("reduced motion shows content without animating", async ({ page }) => {
+  test("reduced motion shows the bug list without animating", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/");
 
-    const section = page.locator("#bugs");
-    // Should be visible immediately, no 0-opacity flash to wait out.
-    await expect(section).toHaveCSS("opacity", "1");
+    const firstItem = page.locator("#bug-diff-list .diff-item").first();
+    // Should be fully visible immediately, no clipped flash to wait out.
+    await expect(firstItem).toHaveCSS("clip-path", "inset(0px)");
   });
 });

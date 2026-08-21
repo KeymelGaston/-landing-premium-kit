@@ -20,8 +20,8 @@ import HydrationProofCounter from "./interactive/HydrationProofCounter";
     plus the z-index scale in <code class="font-mono text-text">tokens.css</code>
     make that architecturally impossible, not just untested. The button is
     also a React island hydrating with <code class="font-mono text-text">client:visible</code>
-    — the directive most likely to drop a click that lands before hydration
-    finishes.
+    — it stays disabled until hydration is confirmed, so it's never
+    clickable-but-broken in the gap before its listener attaches.
   </p>
 
   <div class="relative z-content mt-6">

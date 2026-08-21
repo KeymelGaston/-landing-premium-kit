@@ -6,23 +6,27 @@ test.describe("Bug 3 regression guard: dead click targets", () => {
     const button = page.locator("[data-hydration-proof-button]");
     await button.scrollIntoViewIfNeeded();
 
-    // Let the decorative blob's loop actually move over the button before
-    // clicking — this is the exact moment a missing pointer-events: none
-    // or wrong z-index would swallow the click.
+    // Wait for the real hydration signal (disabled attribute removed) —
+    // not a fixed delay — then let the decorative blob's loop actually
+    // move over the button before clicking.
+    await expect(button).toBeEnabled({ timeout: 5000 });
     await page.waitForTimeout(700);
     await button.click();
 
     await expect(page.locator("[data-hydration-proof-count]")).toHaveText("1");
   });
 
-  test("click registers immediately after scroll-into-view (hydration race)", async ({ page }) => {
+  test("button stays disabled — never clickable-but-broken — until hydration confirms", async ({ page }) => {
     await page.goto("/");
     const button = page.locator("[data-hydration-proof-button]");
-
-    // No wait after scrolling — this is the race a client:visible island
-    // can lose if hydration hasn't attached its listener yet.
     await button.scrollIntoViewIfNeeded();
-    await button.click({ timeout: 3000 });
+
+    // This is the actual fix for the hydration race: instead of hoping a
+    // click lands after the listener attaches, the button is disabled
+    // until an effect (which only runs post-hydration) flips it. Playwright's
+    // click() auto-waits for the disabled attribute to clear, so this same
+    // call that used to race hydration now waits on a real, verifiable signal.
+    await button.click({ timeout: 5000 });
 
     await expect(page.locator("[data-hydration-proof-count]")).toHaveText("1");
   });
