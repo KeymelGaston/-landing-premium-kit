@@ -6,6 +6,8 @@ A motion-design landing page template built with **Astro + GSAP + Lenis + TypeSc
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/KeymelGaston/-landing-premium-kit)
 
+💡 Tip: After deploying, remember to update the site in astro.config.mjs and robots.txt to your live domain for perfect SEO scores.
+
 ---
 
 ## Why this exists
