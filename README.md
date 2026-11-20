@@ -4,6 +4,8 @@ A motion-design landing page template built with **Astro + GSAP + Lenis + TypeSc
 
 **[Live demo](https://landing-premium-kit.vercel.app)** — Lighthouse (mobile): Performance 85 · Accessibility 96 · Best Practices 100 · SEO 100
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=TU_URL_DE_GITHUB_AQUI)
+
 ---
 
 ## Why this exists
